@@ -1,4 +1,6 @@
+open Lkf_formula
 open Lkf_sequent
+open Choice
 
 (* This looks repetitive in many ways... exceptions?
    Moreover, the mapping is fixed, shouldn't this come from outside?
