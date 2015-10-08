@@ -9,7 +9,12 @@ let rec check certificate = function
   | Unfocused(storage, workbench) ->
     (match workbench with
     | [] ->
-      decide_expert certificate storage
+      if decide_cut_conflict certificate then
+        failwith "Decide and cut are in conflict"
+      else
+        let check_decide = decide_expert certificate storage
+        and check_cut = cut_expert certificate storage in
+        check_decide || check_cut
     | hd :: tl ->
       (match hd with
       | NegativeFalse ->
@@ -140,4 +145,25 @@ and decide_expert certificate storage =
           check certificate' (Focused(storage, formula))
         | NegativeFalse | NegativeAnd(_,_) | NegativeOr(_,_) | ForAll(_) | NegativeAtom(_) | NegativeTrue -> false (* Exception? This shouldn't happen *)
         )
+      )
+
+and cut_expert certificate storage =
+  match Lkf_bureau.cut_expert certificate with
+    | None -> false
+    | Some (positive, negative, formula) ->
+      let formula' = neg formula in
+      let check_positive = check positive (Unfocused(storage, [formula]))
+      and check_negative = check negative (Unfocused(storage, [formula'])) in
+      check_positive && check_negative
+
+and decide_cut_conflict certificate =
+  let decide_ok = Lkf_bureau.decide_expert certificate
+  and cut_ok = Lkf_bureau.cut_expert certificate in
+(* Do better than this *)
+  match decide_ok with
+    | None -> false
+    | Some _ ->
+      (match cut_ok with
+      | None -> false
+      | Some _ -> true
       )
