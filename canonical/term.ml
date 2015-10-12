@@ -1,9 +1,7 @@
+(* A good example of use case where terms are not really needed, but what to
+   do with the structure? *)
 type t =
-  | Variable of string
-  | Function of string * t list
+  | Dummy
 
-(* A horribly lazy, fragile hack to get things running *)
 let new_eigenvariable =
-  let number = Random.int 1_000_000 in
-  let name = string_of_int number in
-  Variable(name)
+  Dummy

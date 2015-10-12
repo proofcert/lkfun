@@ -1,3 +1,5 @@
-(* Predicate? *)
 type t =
-  | Relation of string * Term.t list
+  | R1
+  | R2
+  | A
+  | B
