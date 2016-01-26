@@ -1,7 +1,12 @@
 (* A good example of use case where terms are not really needed, but what to
-   do with the structure? *)
+   do with the structure? -> Now extended *)
 type t =
-  | Dummy
+| H of t
+| A
+| Variable of string
+| Dummy
 
 let new_eigenvariable =
-  Dummy
+  let number = Random.int 1_000_000 in
+  let name = string_of_int number in
+  Variable(name)

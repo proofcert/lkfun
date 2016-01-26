@@ -1,5 +1,6 @@
 type t =
-  | R1
-  | R2
-  | A
-  | B
+| G of Term.t
+| R1
+| R2
+| A
+| B
